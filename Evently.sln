@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{53E30C27-5495-41E4-9D60-BAA20E34C374}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{42FB6429-757F-4AC4-865C-4D93E9AA0FF7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{71F96BCB-18F6-4E07-8136-096C62DFB821}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Api", "src\API\Evently.Api\Evently.Api.csproj", "{69633D7F-9F82-49F7-9724-AEB93BCDE98C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{1DBB77A2-CCEE-4FE6-9287-85202FBE054B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Events.Api", "src\Modules\Events\Evently.Modules.Events.Api\Evently.Modules.Events.Api.csproj", "{57259B99-4491-436E-A6DF-5281BE9E9D66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69633D7F-9F82-49F7-9724-AEB93BCDE98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69633D7F-9F82-49F7-9724-AEB93BCDE98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69633D7F-9F82-49F7-9724-AEB93BCDE98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69633D7F-9F82-49F7-9724-AEB93BCDE98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57259B99-4491-436E-A6DF-5281BE9E9D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57259B99-4491-436E-A6DF-5281BE9E9D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57259B99-4491-436E-A6DF-5281BE9E9D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57259B99-4491-436E-A6DF-5281BE9E9D66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42FB6429-757F-4AC4-865C-4D93E9AA0FF7} = {53E30C27-5495-41E4-9D60-BAA20E34C374}
+		{71F96BCB-18F6-4E07-8136-096C62DFB821} = {53E30C27-5495-41E4-9D60-BAA20E34C374}
+		{69633D7F-9F82-49F7-9724-AEB93BCDE98C} = {42FB6429-757F-4AC4-865C-4D93E9AA0FF7}
+		{1DBB77A2-CCEE-4FE6-9287-85202FBE054B} = {71F96BCB-18F6-4E07-8136-096C62DFB821}
+		{57259B99-4491-436E-A6DF-5281BE9E9D66} = {1DBB77A2-CCEE-4FE6-9287-85202FBE054B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E42AE86-7F3C-45F4-A386-AB71CC4446CB}
+	EndGlobalSection
+EndGlobal
