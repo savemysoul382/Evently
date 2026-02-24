@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Evently.Modules.Events.Api.Events;
+﻿namespace Evently.Modules.Events.Application.Events.GetEvent;
 
 public sealed record EventResponse(
     Guid Id,

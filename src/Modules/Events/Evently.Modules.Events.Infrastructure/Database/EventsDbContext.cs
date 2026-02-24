@@ -1,11 +1,12 @@
 ﻿// Evently.Modules.Events.Api
 
-using Evently.Modules.Events.Api.Events;
+using Evently.Modules.Events.Application.Abstractions.Data;
+using Evently.Modules.Events.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 
-namespace Evently.Modules.Events.Api.Database;
+namespace Evently.Modules.Events.Infrastructure.Database;
 
-public sealed class EventsDbContext(DbContextOptions<EventsDbContext> options) : DbContext(options)
+public sealed class EventsDbContext(DbContextOptions<EventsDbContext> options) : DbContext(options), IUnitOfWork
 {
     internal DbSet<Event> Events { get; set; }
 
@@ -13,7 +14,5 @@ public sealed class EventsDbContext(DbContextOptions<EventsDbContext> options) :
     {
         modelBuilder.HasDefaultSchema(Schemas.Events);
         // Ef configure many aspects of the model by default
-
-
     }
 }
