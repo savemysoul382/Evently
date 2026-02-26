@@ -1,3 +1,4 @@
+using Evently.Api.Extensions;
 using Evently.Common.Application;
 using Evently.Common.Infrastructure;
 using Evently.Modules.Events.Infrastructure;
@@ -15,6 +16,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddApplication([Evently.Modules.Events.Application.AssemblyReference.Assembly]);
 
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
+
+builder.Configuration.AddModuleConfiguration(["events"]);
 
 builder.Services.AddEventsModule(builder.Configuration);
 
