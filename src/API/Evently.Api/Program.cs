@@ -1,3 +1,5 @@
+using Evently.Common.Application;
+using Evently.Common.Infrastructure;
 using Evently.Modules.Events.Infrastructure;
 
 #pragma warning disable S125
@@ -9,6 +11,10 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.CustomSchemaIds(t => t.FullName?.Replace("+", "."));
 });
+
+builder.Services.AddApplication([Evently.Modules.Events.Application.AssemblyReference.Assembly]);
+
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
 
 builder.Services.AddEventsModule(builder.Configuration);
 
