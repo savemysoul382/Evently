@@ -25,13 +25,22 @@ public static class InfrastructureConfiguration
 
         services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
-        services.TryAddSingleton(connectionMultiplexer);
-
-        services.AddStackExchangeRedisCache(options =>
+        // была ошибка при миграции пользователей, нужно для ее устранения
+        // стартует при выполнении миграций
+        try
         {
-            options.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer);
-        });
+            IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+            services.TryAddSingleton(connectionMultiplexer);
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.ConnectionMultiplexerFactory = () => Task.FromResult(connectionMultiplexer);
+            });
+        }
+        catch
+        {
+           services.AddDistributedMemoryCache();
+        }
 
         services.TryAddSingleton<ICacheService, CacheService>();
 

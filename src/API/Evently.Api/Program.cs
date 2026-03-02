@@ -4,6 +4,7 @@ using Evently.Common.Application;
 using Evently.Common.Infrastructure;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Events.Infrastructure;
+using Evently.Modules.Users.Infrastructure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -24,7 +25,9 @@ builder.Services.AddSwaggerGen(options =>
     options.CustomSchemaIds(t => t.FullName?.Replace("+", "."));
 });
 
-builder.Services.AddApplication([Evently.Modules.Events.Application.AssemblyReference.Assembly]);
+builder.Services.AddApplication([
+        Evently.Modules.Events.Application.AssemblyReference.Assembly, 
+        Evently.Modules.Users.Application.AssemblyReference.Assembly]);
 
 string dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
 string redisConnectionString = builder.Configuration.GetConnectionString("Cache")!;
@@ -33,13 +36,14 @@ builder.Services.AddInfrastructure(
     dbConnectionString,
     redisConnectionString);
 
-builder.Configuration.AddModuleConfiguration(["events"]);
+builder.Configuration.AddModuleConfiguration(["events", "users"]);
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(dbConnectionString)
     .AddRedis(redisConnectionString);
 
 builder.Services.AddEventsModule(builder.Configuration);
+builder.Services.AddUsersModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
@@ -48,7 +52,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // app.ApplyMigrations();
+    app.ApplyMigrations();
 }
 
 app.MapEndpoints();
