@@ -1,4 +1,4 @@
-﻿using Evently.Common.Infrastructure.Interceptors;
+﻿using Evently.Common.Infrastructure.Outbox;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Users.Application.Abstractions.Data;
 using Evently.Modules.Users.Domain.Users;
@@ -13,7 +13,9 @@ namespace Evently.Modules.Users.Infrastructure;
 
 public static class UsersModule
 {
-    public static IServiceCollection AddUsersModule(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddUsersModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
 

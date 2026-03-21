@@ -3,11 +3,10 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 
-#pragma warning disable CA1873
-
 namespace Evently.Common.Application.Behaviors;
 
-internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogger<RequestLoggingPipelineBehavior<TRequest, TResponse>> logger)
+internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
+    ILogger<RequestLoggingPipelineBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class
     where TResponse : Result
@@ -17,24 +16,24 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogge
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        string moduleName = GetModuleName(requestName: typeof(TRequest).FullName!);
+        string moduleName = GetModuleName(typeof(TRequest).FullName!);
         string requestName = typeof(TRequest).Name;
 
-        using (LogContext.PushProperty(name: "Module", value: moduleName))
+        using (LogContext.PushProperty("Module", moduleName))
         {
-            logger.LogInformation(message: "Processing request {RequestName}", args: requestName);
+            logger.LogInformation("Processing request {RequestName}", requestName);
 
             TResponse result = await next();
 
             if (result.IsSuccess)
             {
-                logger.LogInformation(message: "Completed request {RequestName}", args: requestName);
+                logger.LogInformation("Completed request {RequestName}", requestName);
             }
             else
             {
-                using (LogContext.PushProperty(name: "Error", value: result.Error, destructureObjects: true))
+                using (LogContext.PushProperty("Error", result.Error, true))
                 {
-                    logger.LogError(message: "Completed request {RequestName} with error", args: requestName);
+                    logger.LogError("Completed request {RequestName} with error", requestName);
                 }
             }
 
@@ -42,5 +41,5 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogge
         }
     }
 
-    private static string GetModuleName(string requestName) => requestName.Split(separator: '.')[2];
+    private static string GetModuleName(string requestName) => requestName.Split('.')[2];
 }

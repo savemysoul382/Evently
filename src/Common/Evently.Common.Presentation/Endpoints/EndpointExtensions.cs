@@ -12,7 +12,7 @@ public static class EndpointExtensions
     {
         ServiceDescriptor[] serviceDescriptors = assemblies
             .SelectMany(a => a.GetTypes())
-            .Where(type => type is {IsAbstract: false, IsInterface: false} &&
+            .Where(type => type is { IsAbstract: false, IsInterface: false } &&
                            type.IsAssignableTo(typeof(IEndpoint)))
             .Select(type => ServiceDescriptor.Transient(typeof(IEndpoint), type))
             .ToArray();
@@ -22,7 +22,9 @@ public static class EndpointExtensions
         return services;
     }
 
-    public static IApplicationBuilder MapEndpoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
+    public static IApplicationBuilder MapEndpoints(
+        this WebApplication app,
+        RouteGroupBuilder? routeGroupBuilder = null)
     {
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
 

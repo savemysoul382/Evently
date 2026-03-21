@@ -7,11 +7,15 @@ using MediatR;
 
 namespace Evently.Common.Application.Behaviors;
 
-internal sealed class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+internal sealed class ValidationPipelineBehavior<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IBaseCommand
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         ValidationFailure[] validationFailures = await ValidateAsync(request);
 
@@ -20,7 +24,8 @@ internal sealed class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerabl
             return await next();
         }
 
-        if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+        if (typeof(TResponse).IsGenericType &&
+            typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
         {
             Type resultType = typeof(TResponse).GetGenericArguments()[0];
 

@@ -1,4 +1,4 @@
-﻿using Evently.Common.Infrastructure.Interceptors;
+﻿using Evently.Common.Infrastructure.Outbox;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Events.Application.Abstractions.Data;
 using Evently.Modules.Events.Domain.Categories;
@@ -7,9 +7,7 @@ using Evently.Modules.Events.Domain.TicketTypes;
 using Evently.Modules.Events.Infrastructure.Categories;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
-using Evently.Modules.Events.Infrastructure.PublicApi;
 using Evently.Modules.Events.Infrastructure.TicketTypes;
-using Evently.Modules.Events.PublicApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +17,9 @@ namespace Evently.Modules.Events.Infrastructure;
 
 public static class EventsModule
 {
-    public static IServiceCollection AddEventsModule(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddEventsModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddEndpoints(Presentation.AssemblyReference.Assembly);
 
@@ -32,16 +32,12 @@ public static class EventsModule
     {
         string databaseConnectionString = configuration.GetConnectionString("Database")!;
 
-        services.AddDbContext<EventsDbContext>((sp, options )=>
+        services.AddDbContext<EventsDbContext>((sp, options) =>
             options
                 .UseNpgsql(
                     databaseConnectionString,
                     npgsqlOptions => npgsqlOptions
-                        .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Events)
-                        .EnableRetryOnFailure(
-                            maxRetryCount: 5,
-                            maxRetryDelay: TimeSpan.FromSeconds(30),
-                            errorCodesToAdd: null))
+                        .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Events))
                 .UseSnakeCaseNamingConvention()
                 .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>()));
 
@@ -50,7 +46,5 @@ public static class EventsModule
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
-
-        services.AddScoped<IEventsApi, EventsApi>();
     }
 }
