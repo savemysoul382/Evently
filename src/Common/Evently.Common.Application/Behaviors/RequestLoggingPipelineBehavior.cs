@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
+#pragma warning disable CA1873
 
 namespace Evently.Common.Application.Behaviors;
 

@@ -30,8 +30,23 @@ public static class UsersModule
             options
                 .UseNpgsql(
                     configuration.GetConnectionString("Database"),
-                    npgsqlOptions => npgsqlOptions
-                        .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Users))
+                    npgsqlOptions =>
+                    {
+                        npgsqlOptions
+                            .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Users);
+
+                        // 1. Включаем редраи (повторные попытки)
+                        // Параметры: maxRetryCount (кол-во попыток), maxRetryDelay (макс. задержка между попытками), errorCodes (коды ошибок для редрая)
+                        npgsqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorCodesToAdd: null // null означает использование стандартного списка временных ошибок PostgreSQL
+                        );
+
+                        // 2. Увеличиваем таймаут команды (опционально, но полезно при старте)
+                        // По умолчанию 30 секунд. Если БД грузится долго, увеличьте до 60-120 сек.
+                        npgsqlOptions.CommandTimeout(60);
+                    })
                 .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
                 .UseSnakeCaseNamingConvention());
 
