@@ -62,6 +62,15 @@ if (app.Environment.IsDevelopment())
     // app.ApplyMigrations();
 }
 
+
+
+app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapEndpoints();
 
 app.MapHealthChecks(
@@ -71,13 +80,5 @@ app.MapHealthChecks(
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
     }
 );
-
-app.UseSerilogRequestLogging();
-
-app.UseExceptionHandler();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
 
 app.Run();
